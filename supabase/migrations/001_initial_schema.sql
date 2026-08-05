@@ -5,14 +5,13 @@
 
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "postgis";
 
 -- ============================================================
 -- TENANT & AUTH
 -- ============================================================
 
 CREATE TABLE tenants (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   name_ar TEXT,
   slug TEXT UNIQUE NOT NULL,
@@ -47,7 +46,7 @@ CREATE TABLE profiles (
 -- ============================================================
 
 CREATE TABLE regions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   name TEXT NOT NULL,
   name_ar TEXT,
@@ -55,7 +54,7 @@ CREATE TABLE regions (
 );
 
 CREATE TABLE stores (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   region_id UUID REFERENCES regions(id),
   name TEXT NOT NULL,
@@ -80,7 +79,7 @@ CREATE TABLE stores (
 -- ============================================================
 
 CREATE TABLE product_categories (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   name TEXT NOT NULL,
   name_ar TEXT,
@@ -89,7 +88,7 @@ CREATE TABLE product_categories (
 );
 
 CREATE TABLE products (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   category_id UUID REFERENCES product_categories(id),
   name TEXT NOT NULL,
@@ -109,7 +108,7 @@ CREATE TABLE products (
 -- ============================================================
 
 CREATE TABLE visit_templates (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   name TEXT NOT NULL,
   name_ar TEXT,
@@ -119,7 +118,7 @@ CREATE TABLE visit_templates (
 );
 
 CREATE TABLE visits (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   store_id UUID NOT NULL REFERENCES stores(id),
   merchandiser_id UUID NOT NULL REFERENCES profiles(id),
@@ -151,7 +150,7 @@ CREATE TABLE visits (
 -- ============================================================
 
 CREATE TABLE visit_photos (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   visit_id UUID NOT NULL REFERENCES visits(id) ON DELETE CASCADE,
   photo_url TEXT NOT NULL,
@@ -169,7 +168,7 @@ CREATE TABLE visit_photos (
 -- ============================================================
 
 CREATE TABLE expiry_records (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   visit_id UUID REFERENCES visits(id),
   store_id UUID NOT NULL REFERENCES stores(id),
@@ -190,7 +189,7 @@ CREATE TABLE expiry_records (
 -- ============================================================
 
 CREATE TABLE returns (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   store_id UUID NOT NULL REFERENCES stores(id),
   merchandiser_id UUID NOT NULL REFERENCES profiles(id),
@@ -209,7 +208,7 @@ CREATE TABLE returns (
 );
 
 CREATE TABLE return_items (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   return_id UUID NOT NULL REFERENCES returns(id) ON DELETE CASCADE,
   product_id UUID NOT NULL REFERENCES products(id),
   quantity INTEGER NOT NULL DEFAULT 1,
@@ -225,7 +224,7 @@ CREATE TABLE return_items (
 -- ============================================================
 
 CREATE TABLE issues (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   visit_id UUID REFERENCES visits(id),
   store_id UUID NOT NULL REFERENCES stores(id),
@@ -249,7 +248,7 @@ CREATE TABLE issues (
 -- ============================================================
 
 CREATE TABLE campaigns (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   name TEXT NOT NULL,
   name_ar TEXT,
@@ -270,7 +269,7 @@ CREATE TABLE campaigns (
 -- ============================================================
 
 CREATE TABLE notifications (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   user_id UUID NOT NULL REFERENCES profiles(id),
   title TEXT NOT NULL,
@@ -285,7 +284,7 @@ CREATE TABLE notifications (
 );
 
 CREATE TABLE audit_log (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id),
   user_id UUID REFERENCES profiles(id),
   action TEXT NOT NULL,
@@ -345,13 +344,13 @@ ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_log ENABLE ROW LEVEL SECURITY;
 
 -- Helper function: get current user's tenant_id
-CREATE OR REPLACE FUNCTION auth.tenant_id()
+CREATE OR REPLACE FUNCTION public.get_tenant_id()
 RETURNS UUID AS $$
   SELECT tenant_id FROM profiles WHERE id = auth.uid()
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
 -- Helper function: get current user's role
-CREATE OR REPLACE FUNCTION auth.user_role()
+CREATE OR REPLACE FUNCTION public.get_user_role()
 RETURNS TEXT AS $$
   SELECT role FROM profiles WHERE id = auth.uid()
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
@@ -359,16 +358,16 @@ $$ LANGUAGE sql SECURITY DEFINER STABLE;
 -- Tenant policies: platform_admin sees all, others see own tenant
 CREATE POLICY "Platform admins see all tenants" ON tenants
   FOR SELECT TO authenticated
-  USING (auth.user_role() = 'platform_admin');
+  USING (public.get_user_role() = 'platform_admin');
 
 CREATE POLICY "Users see own tenant" ON tenants
   FOR SELECT TO authenticated
-  USING (id = auth.tenant_id());
+  USING (id = public.get_tenant_id());
 
 -- Profiles: users see profiles in same tenant
 CREATE POLICY "Users see own tenant profiles" ON profiles
   FOR SELECT TO authenticated
-  USING (tenant_id = auth.tenant_id() OR auth.user_role() = 'platform_admin');
+  USING (tenant_id = public.get_tenant_id() OR public.get_user_role() = 'platform_admin');
 
 CREATE POLICY "Users update own profile" ON profiles
   FOR UPDATE TO authenticated
@@ -382,23 +381,23 @@ BEGIN
   FOR tbl IN SELECT unnest(ARRAY[
     'regions', 'stores', 'product_categories', 'products',
     'visit_templates', 'visits', 'visit_photos', 'expiry_records',
-    'returns', 'return_items', 'issues', 'campaigns',
+    'returns', 'issues', 'campaigns',
     'notifications', 'audit_log'
   ])
   LOOP
     -- SELECT: tenant isolation
     EXECUTE format(
-      'CREATE POLICY "Tenant isolation select" ON %I FOR SELECT TO authenticated USING (tenant_id = auth.tenant_id() OR auth.user_role() = ''platform_admin'')',
+      'CREATE POLICY "Tenant isolation select" ON %I FOR SELECT TO authenticated USING (tenant_id = public.get_tenant_id() OR public.get_user_role() = ''platform_admin'')',
       tbl
     );
     -- INSERT: must match own tenant
     EXECUTE format(
-      'CREATE POLICY "Tenant isolation insert" ON %I FOR INSERT TO authenticated WITH CHECK (tenant_id = auth.tenant_id())',
+      'CREATE POLICY "Tenant isolation insert" ON %I FOR INSERT TO authenticated WITH CHECK (tenant_id = public.get_tenant_id())',
       tbl
     );
     -- UPDATE: tenant isolation
     EXECUTE format(
-      'CREATE POLICY "Tenant isolation update" ON %I FOR UPDATE TO authenticated USING (tenant_id = auth.tenant_id())',
+      'CREATE POLICY "Tenant isolation update" ON %I FOR UPDATE TO authenticated USING (tenant_id = public.get_tenant_id())',
       tbl
     );
   END LOOP;
@@ -412,7 +411,7 @@ DROP POLICY IF EXISTS "Tenant isolation update" ON return_items;
 CREATE POLICY "Return items via return" ON return_items
   FOR ALL TO authenticated
   USING (EXISTS (
-    SELECT 1 FROM returns WHERE returns.id = return_items.return_id AND returns.tenant_id = auth.tenant_id()
+    SELECT 1 FROM returns WHERE returns.id = return_items.return_id AND returns.tenant_id = public.get_tenant_id()
   ));
 
 -- Notifications: users only see their own
