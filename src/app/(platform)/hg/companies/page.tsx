@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 const companies = [
   {
     id: "1",
-    name: "Elfares Food Industries",
+    name: "AlFares Food Industries",
     nameAr: "الفارس للصناعات الغذائية",
     industry: "Food & Beverage",
     plan: "enterprise",

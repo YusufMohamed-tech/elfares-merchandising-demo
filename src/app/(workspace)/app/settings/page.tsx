@@ -62,7 +62,7 @@ export default function SettingsPage() {
                 <div className="space-y-4 max-w-md">
                   <div>
                     <Label className="text-xs text-gray-500 uppercase tracking-wide">Company Name</Label>
-                    <Input defaultValue="Elfares Food Industries" className="mt-1.5" />
+                    <Input defaultValue="AlFares Food Industries" className="mt-1.5" />
                   </div>
                   <div>
                     <Label className="text-xs text-gray-500 uppercase tracking-wide">Industry</Label>
@@ -74,7 +74,7 @@ export default function SettingsPage() {
                   </div>
                   <div>
                     <Label className="text-xs text-gray-500 uppercase tracking-wide">Primary Contact</Label>
-                    <Input defaultValue="admin@elfares.sa" className="mt-1.5" />
+                    <Input defaultValue="admin@alfares.sa" className="mt-1.5" />
                   </div>
                 </div>
               </div>

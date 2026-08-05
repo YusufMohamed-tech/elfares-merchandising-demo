@@ -13,7 +13,7 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "Elfares Merchandising Platform",
+  title: "AlFares Merchandising Platform",
   description: "Merchandising & Retail Execution Platform by HG Communication",
 };
 

@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Elfares Merchandising Platform",
+    "appName": "AlFares Merchandising Platform",
     "poweredBy": "Powered by HG Communication",
     "login": "Sign In",
     "logout": "Sign Out",
@@ -24,8 +24,8 @@
     "welcome": "Welcome"
   },
   "auth": {
-    "loginTitle": "Elfares Merchandising Platform",
-    "loginSubtitle": "Welcome to the Elfares company workspace",
+    "loginTitle": "AlFares Merchandising Platform",
+    "loginSubtitle": "Welcome to the AlFares company workspace",
     "email": "Email address",
     "password": "Password",
     "rememberMe": "Remember me",

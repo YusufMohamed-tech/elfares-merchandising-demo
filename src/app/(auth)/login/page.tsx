@@ -10,8 +10,8 @@ import { createClient } from "@/lib/supabase/client"
 
 const translations = {
   en: {
-    title: "Elfares Merchandising Platform",
-    subtitle: "Welcome to the Elfares company workspace",
+    title: "AlFares Merchandising Platform",
+    subtitle: "Welcome to the AlFares company workspace",
     email: "Email",
     emailPlaceholder: "Enter your email",
     password: "Password",
@@ -90,14 +90,14 @@ export default function LoginPage() {
       <div className="w-full max-w-[420px] rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
         {/* Logo Section */}
         <div className="mb-6 flex items-center justify-center gap-4">
-          {/* Elfares Logo - Stylized wheat/plant */}
+          {/* AlFares Logo - Stylized wheat/plant */}
           <svg
             width="40"
             height="40"
             viewBox="0 0 40 40"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            aria-label="Elfares logo"
+            aria-label="AlFares logo"
           >
             <path
               d="M20 36V20"

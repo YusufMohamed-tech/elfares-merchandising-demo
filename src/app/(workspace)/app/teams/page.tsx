@@ -4,14 +4,14 @@ import { Users, MapPin, Phone, Mail, CheckCircle2, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 const team = [
-  { id: "1", name: "Mohammed Ali", nameAr: "محمد علي", role: "Merchandiser", region: "Riyadh", phone: "+966 55 xxx xxxx", email: "m.ali@elfares.sa", status: "active", todayVisits: 3, completedToday: 2 },
-  { id: "2", name: "Ahmed Khalid", nameAr: "أحمد خالد", role: "Merchandiser", region: "Riyadh", phone: "+966 55 xxx xxxx", email: "a.khalid@elfares.sa", status: "active", todayVisits: 2, completedToday: 1 },
-  { id: "3", name: "Khalid Saeed", nameAr: "خالد سعيد", role: "Merchandiser", region: "Riyadh", phone: "+966 55 xxx xxxx", email: "k.saeed@elfares.sa", status: "active", todayVisits: 3, completedToday: 0 },
-  { id: "4", name: "Fahad Mohammed", nameAr: "فهد محمد", role: "Merchandiser", region: "Jeddah", phone: "+966 55 xxx xxxx", email: "f.mohammed@elfares.sa", status: "active", todayVisits: 2, completedToday: 2 },
-  { id: "5", name: "Omar Hassan", nameAr: "عمر حسن", role: "Merchandiser", region: "Jeddah", phone: "+966 55 xxx xxxx", email: "o.hassan@elfares.sa", status: "inactive", todayVisits: 0, completedToday: 0 },
-  { id: "6", name: "Ali Nasser", nameAr: "علي ناصر", role: "Merchandiser", region: "Dammam", phone: "+966 55 xxx xxxx", email: "a.nasser@elfares.sa", status: "active", todayVisits: 2, completedToday: 1 },
-  { id: "7", name: "Saeed Al-Harbi", nameAr: "سعيد الحربي", role: "Merchandiser", region: "Dammam", phone: "+966 55 xxx xxxx", email: "s.harbi@elfares.sa", status: "active", todayVisits: 2, completedToday: 2 },
-  { id: "8", name: "Yousef Khan", nameAr: "يوسف خان", role: "Supervisor", region: "All", phone: "+966 55 xxx xxxx", email: "y.khan@elfares.sa", status: "active", todayVisits: 0, completedToday: 0 },
+  { id: "1", name: "Mohammed Ali", nameAr: "محمد علي", role: "Merchandiser", region: "Riyadh", phone: "+966 55 xxx xxxx", email: "m.ali@alfares.sa", status: "active", todayVisits: 3, completedToday: 2 },
+  { id: "2", name: "Ahmed Khalid", nameAr: "أحمد خالد", role: "Merchandiser", region: "Riyadh", phone: "+966 55 xxx xxxx", email: "a.khalid@alfares.sa", status: "active", todayVisits: 2, completedToday: 1 },
+  { id: "3", name: "Khalid Saeed", nameAr: "خالد سعيد", role: "Merchandiser", region: "Riyadh", phone: "+966 55 xxx xxxx", email: "k.saeed@alfares.sa", status: "active", todayVisits: 3, completedToday: 0 },
+  { id: "4", name: "Fahad Mohammed", nameAr: "فهد محمد", role: "Merchandiser", region: "Jeddah", phone: "+966 55 xxx xxxx", email: "f.mohammed@alfares.sa", status: "active", todayVisits: 2, completedToday: 2 },
+  { id: "5", name: "Omar Hassan", nameAr: "عمر حسن", role: "Merchandiser", region: "Jeddah", phone: "+966 55 xxx xxxx", email: "o.hassan@alfares.sa", status: "inactive", todayVisits: 0, completedToday: 0 },
+  { id: "6", name: "Ali Nasser", nameAr: "علي ناصر", role: "Merchandiser", region: "Dammam", phone: "+966 55 xxx xxxx", email: "a.nasser@alfares.sa", status: "active", todayVisits: 2, completedToday: 1 },
+  { id: "7", name: "Saeed Al-Harbi", nameAr: "سعيد الحربي", role: "Merchandiser", region: "Dammam", phone: "+966 55 xxx xxxx", email: "s.harbi@alfares.sa", status: "active", todayVisits: 2, completedToday: 2 },
+  { id: "8", name: "Yousef Khan", nameAr: "يوسف خان", role: "Supervisor", region: "All", phone: "+966 55 xxx xxxx", email: "y.khan@alfares.sa", status: "active", todayVisits: 0, completedToday: 0 },
 ]
 
 export default function TeamsPage() {

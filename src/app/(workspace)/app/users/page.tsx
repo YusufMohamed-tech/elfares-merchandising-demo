@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 const users = [
-  { id: "1", name: "Yousef Khan", nameAr: "يوسف خان", email: "y.khan@elfares.sa", phone: "+966 50 111 2233", role: "manager", region: "All Regions", status: "active", lastActive: "2026-08-05", initials: "YK" },
-  { id: "2", name: "Mohammed Ali", nameAr: "محمد علي", email: "m.ali@elfares.sa", phone: "+966 55 234 5678", role: "merchandiser", region: "Riyadh", status: "active", lastActive: "2026-08-05", initials: "MA" },
-  { id: "3", name: "Ahmed Khalid", nameAr: "أحمد خالد", email: "a.khalid@elfares.sa", phone: "+966 55 345 6789", role: "merchandiser", region: "Jeddah", status: "active", lastActive: "2026-08-05", initials: "AK" },
-  { id: "4", name: "Khalid Saeed", nameAr: "خالد سعيد", email: "k.saeed@elfares.sa", phone: "+966 55 456 7890", role: "merchandiser", region: "Riyadh", status: "active", lastActive: "2026-08-04", initials: "KS" },
-  { id: "5", name: "Ali Nasser", nameAr: "علي ناصر", email: "a.nasser@elfares.sa", phone: "+966 55 567 8901", role: "merchandiser", region: "Dammam", status: "active", lastActive: "2026-08-04", initials: "AN" },
-  { id: "6", name: "Fahad Mohammed", nameAr: "فهد محمد", email: "f.mohammed@elfares.sa", phone: "+966 55 678 9012", role: "supervisor", region: "Jeddah", status: "active", lastActive: "2026-08-03", initials: "FM" },
-  { id: "7", name: "Saeed Al-Harbi", nameAr: "سعيد الحربي", email: "s.alharbi@elfares.sa", phone: "+966 55 789 0123", role: "merchandiser", region: "Dammam", status: "active", lastActive: "2026-08-03", initials: "SA" },
-  { id: "8", name: "Omar Rashid", nameAr: "عمر راشد", email: "o.rashid@elfares.sa", phone: "+966 55 890 1234", role: "merchandiser", region: "Riyadh", status: "inactive", lastActive: "2026-07-28", initials: "OR" },
+  { id: "1", name: "Yousef Khan", nameAr: "يوسف خان", email: "y.khan@alfares.sa", phone: "+966 50 111 2233", role: "manager", region: "All Regions", status: "active", lastActive: "2026-08-05", initials: "YK" },
+  { id: "2", name: "Mohammed Ali", nameAr: "محمد علي", email: "m.ali@alfares.sa", phone: "+966 55 234 5678", role: "merchandiser", region: "Riyadh", status: "active", lastActive: "2026-08-05", initials: "MA" },
+  { id: "3", name: "Ahmed Khalid", nameAr: "أحمد خالد", email: "a.khalid@alfares.sa", phone: "+966 55 345 6789", role: "merchandiser", region: "Jeddah", status: "active", lastActive: "2026-08-05", initials: "AK" },
+  { id: "4", name: "Khalid Saeed", nameAr: "خالد سعيد", email: "k.saeed@alfares.sa", phone: "+966 55 456 7890", role: "merchandiser", region: "Riyadh", status: "active", lastActive: "2026-08-04", initials: "KS" },
+  { id: "5", name: "Ali Nasser", nameAr: "علي ناصر", email: "a.nasser@alfares.sa", phone: "+966 55 567 8901", role: "merchandiser", region: "Dammam", status: "active", lastActive: "2026-08-04", initials: "AN" },
+  { id: "6", name: "Fahad Mohammed", nameAr: "فهد محمد", email: "f.mohammed@alfares.sa", phone: "+966 55 678 9012", role: "supervisor", region: "Jeddah", status: "active", lastActive: "2026-08-03", initials: "FM" },
+  { id: "7", name: "Saeed Al-Harbi", nameAr: "سعيد الحربي", email: "s.alharbi@alfares.sa", phone: "+966 55 789 0123", role: "merchandiser", region: "Dammam", status: "active", lastActive: "2026-08-03", initials: "SA" },
+  { id: "8", name: "Omar Rashid", nameAr: "عمر راشد", email: "o.rashid@alfares.sa", phone: "+966 55 890 1234", role: "merchandiser", region: "Riyadh", status: "inactive", lastActive: "2026-07-28", initials: "OR" },
 ]
 
 const roleConfig: Record<string, { label: string; classes: string }> = {

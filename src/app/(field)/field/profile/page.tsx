@@ -35,7 +35,7 @@ export default function FieldProfilePage() {
       <div className="rounded-xl border border-gray-200 bg-white divide-y divide-gray-100">
         <div className="flex items-center gap-3 px-4 py-3">
           <Mail className="h-4 w-4 text-gray-400" />
-          <span className="text-sm text-gray-700">m.ali@elfares.sa</span>
+          <span className="text-sm text-gray-700">m.ali@alfares.sa</span>
         </div>
         <div className="flex items-center gap-3 px-4 py-3">
           <Phone className="h-4 w-4 text-gray-400" />
@@ -77,7 +77,7 @@ export default function FieldProfilePage() {
       </Button>
 
       <p className="text-center text-[10px] text-gray-400">
-        Elfares Merchandising Platform v1.0<br />
+        AlFares Merchandising Platform v1.0<br />
         Powered by HG Communication
       </p>
     </div>

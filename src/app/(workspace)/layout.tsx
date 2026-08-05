@@ -123,7 +123,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
       >
         {/* Sidebar Header */}
         <header className="flex h-16 items-center gap-3 px-4 border-b border-gray-100">
-          {/* Elfares wheat logo */}
+          {/* AlFares wheat logo */}
           <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
             <path d="M20 36V20" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round"/>
             <path d="M20 20C18 16 14 12 12 8C14 10 18 14 20 16" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -133,7 +133,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
           </svg>
           {!sidebarCollapsed && (
             <span className="text-lg font-semibold text-gray-900">
-              {isRTL ? "الفارس" : "Elfares"}
+              {isRTL ? "الفارس" : "AlFares"}
             </span>
           )}
         </header>
