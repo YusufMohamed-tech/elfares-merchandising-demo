@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Bell, MapPin, Calendar, Users, Store, Package,
   Clock, RotateCcw, AlertTriangle, CheckCircle, BarChart3, Megaphone,
   UserCog, Settings, FileText, Search, Globe, Menu, X,
-  ChevronLeft, ChevronRight, LogOut, User,
+  ChevronLeft, ChevronRight, LogOut, User, Radio,
 } from "lucide-react";
 import { logout } from "@/lib/supabase/auth-actions";
 
@@ -24,9 +24,10 @@ const navGroups = [
     label:   "Field Operations",
     labelAr: "العمليات الميدانية",
     items: [
-      { name: "Visits",   nameAr: "الزيارات", icon: MapPin,   href: "/app/visits" },
-      { name: "Calendar", nameAr: "التقويم",  icon: Calendar, href: "/app/calendar" },
-      { name: "Teams",    nameAr: "الفريق",   icon: Users,    href: "/app/teams" },
+      { name: "Visits",    nameAr: "الزيارات",       icon: MapPin,   href: "/app/visits" },
+      { name: "Live Map",  nameAr: "الخريطة المباشرة", icon: Radio,    href: "/app/live-map" },
+      { name: "Calendar",  nameAr: "التقويم",         icon: Calendar, href: "/app/calendar" },
+      { name: "Teams",     nameAr: "الفريق",          icon: Users,    href: "/app/teams" },
     ],
   },
   {
