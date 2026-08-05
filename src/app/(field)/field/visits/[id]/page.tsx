@@ -36,8 +36,10 @@ const stepIcons: Record<string, typeof Camera> = {
 export default function VisitExecutionPage() {
   const router = useRouter()
   const params = useParams()
-  const [checkedIn, setCheckedIn] = useState(true)
+  const [checkedIn, setCheckedIn] = useState(false)
   const [checkingIn, setCheckingIn] = useState(false)
+  const [checkedOut, setCheckedOut] = useState(false)
+  const [checkInTime, setCheckInTime] = useState("")
   const [gpsError, setGpsError] = useState("")
   const [steps, setSteps] = useState(visitData.steps)
 
@@ -59,6 +61,9 @@ export default function VisitExecutionPage() {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        const now = new Date()
+        const timeStr = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
+        setCheckInTime(timeStr)
         setCheckedIn(true)
         setCheckingIn(false)
       },
@@ -77,7 +82,22 @@ export default function VisitExecutionPage() {
   }
 
   const handleCheckOut = () => {
-    router.push("/field/today")
+    setCheckedOut(true)
+    setTimeout(() => router.push("/field/today"), 1800)
+  }
+
+  if (checkedOut) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 text-center">
+        <div className="h-20 w-20 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
+          <CheckCircle2 className="h-10 w-10 text-emerald-600" />
+        </div>
+        <h2 className="text-xl font-bold text-gray-900">Visit Complete!</h2>
+        <p className="text-sm text-gray-500 mt-2">{visitData.store}</p>
+        <p className="text-xs text-gray-400 mt-1">Checked out at {new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}</p>
+        <p className="text-xs text-emerald-600 mt-4 font-medium">Returning to Today...</p>
+      </div>
+    )
   }
 
   return (
@@ -139,7 +159,7 @@ export default function VisitExecutionPage() {
         ) : (
           <div className="flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-            <span className="text-xs font-medium text-emerald-700">Checked in at 10:05 AM</span>
+            <span className="text-xs font-medium text-emerald-700">Checked in at {checkInTime}</span>
           </div>
         )}
 
