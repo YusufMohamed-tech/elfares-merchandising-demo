@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Bell, MapPin, Calendar, Users, Store, Package,
   Clock, RotateCcw, AlertTriangle, CheckCircle, BarChart3, Megaphone,
   UserCog, Settings, FileText, Search, Globe, Menu, X,
-  ChevronLeft, ChevronRight, Leaf, LogOut, User,
+  ChevronLeft, ChevronRight, LogOut, User,
 } from "lucide-react";
 import { logout } from "@/lib/supabase/auth-actions";
 
@@ -123,9 +123,14 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
       >
         {/* Sidebar Header */}
         <header className="flex h-16 items-center gap-3 px-4 border-b border-gray-100">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-yellow-500 flex-shrink-0">
-            <Leaf className="w-5 h-5 text-white" />
-          </div>
+          {/* Elfares wheat logo */}
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+            <path d="M20 36V20" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M20 20C18 16 14 12 12 8C14 10 18 14 20 16" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 20C22 16 26 12 28 8C26 10 22 14 20 16" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 26C17 22 13 18 11 14C13 16 17 20 20 22" stroke="#F9A825" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 26C23 22 27 18 29 14C27 16 23 20 20 22" stroke="#F9A825" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
           {!sidebarCollapsed && (
             <span className="text-lg font-semibold text-gray-900">
               {isRTL ? "الفارس" : "Elfares"}

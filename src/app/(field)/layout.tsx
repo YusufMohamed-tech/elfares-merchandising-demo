@@ -23,7 +23,16 @@ export default function FieldLayout({
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Top bar */}
       <header className="flex h-14 items-center justify-between px-4 bg-white border-b border-gray-200">
-        <span className="text-lg font-semibold text-green-700">Elfares</span>
+        <div className="flex items-center gap-2">
+          <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 36V20" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M20 20C18 16 14 12 12 8C14 10 18 14 20 16" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 20C22 16 26 12 28 8C26 10 22 14 20 16" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 26C17 22 13 18 11 14C13 16 17 20 20 22" stroke="#F9A825" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M20 26C23 22 27 18 29 14C27 16 23 20 20 22" stroke="#F9A825" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-lg font-semibold text-gray-900">Elfares</span>
+        </div>
         <div className="flex items-center gap-3">
           <button className="relative p-2 rounded-md text-gray-500">
             <Bell className="w-5 h-5" />
