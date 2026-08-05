@@ -1,102 +1,110 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard,
-  Bell,
-  MapPin,
-  Calendar,
-  Users,
-  Store,
-  Package,
-  Clock,
-  RotateCcw,
-  AlertTriangle,
-  CheckCircle,
-  BarChart3,
-  Megaphone,
-  UserCog,
-  Settings,
-  FileText,
-  Search,
-  Globe,
-  Menu,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Leaf,
+  LayoutDashboard, Bell, MapPin, Calendar, Users, Store, Package,
+  Clock, RotateCcw, AlertTriangle, CheckCircle, BarChart3, Megaphone,
+  UserCog, Settings, FileText, Search, Globe, Menu, X,
+  ChevronLeft, ChevronRight, Leaf, LogOut, User,
 } from "lucide-react";
+import { logout } from "@/lib/supabase/auth-actions";
 
 const navGroups = [
   {
-    label: "Overview",
+    label:   "Overview",
+    labelAr: "نظرة عامة",
     items: [
-      { name: "Dashboard", icon: LayoutDashboard, href: "/app/dashboard" },
-      { name: "Notifications", icon: Bell, href: "/app/notifications" },
+      { name: "Dashboard",      nameAr: "لوحة التحكم",        icon: LayoutDashboard, href: "/app/dashboard" },
+      { name: "Notifications",  nameAr: "الإشعارات",          icon: Bell,            href: "/app/notifications" },
     ],
   },
   {
-    label: "Field Operations",
+    label:   "Field Operations",
+    labelAr: "العمليات الميدانية",
     items: [
-      { name: "Visits", icon: MapPin, href: "/app/visits" },
-      { name: "Calendar", icon: Calendar, href: "/app/calendar" },
-      { name: "Teams", icon: Users, href: "/app/teams" },
+      { name: "Visits",   nameAr: "الزيارات", icon: MapPin,   href: "/app/visits" },
+      { name: "Calendar", nameAr: "التقويم",  icon: Calendar, href: "/app/calendar" },
+      { name: "Teams",    nameAr: "الفريق",   icon: Users,    href: "/app/teams" },
     ],
   },
   {
-    label: "Retail Network",
+    label:   "Retail Network",
+    labelAr: "شبكة التجزئة",
     items: [
-      { name: "Stores", icon: Store, href: "/app/stores" },
-      { name: "Products", icon: Package, href: "/app/products" },
+      { name: "Stores",   nameAr: "المتاجر",  icon: Store,   href: "/app/stores" },
+      { name: "Products", nameAr: "المنتجات", icon: Package, href: "/app/products" },
     ],
   },
   {
-    label: "Stock Operations",
+    label:   "Stock Operations",
+    labelAr: "عمليات المخزون",
     items: [
-      { name: "Expiry", icon: Clock, href: "/app/expiry" },
-      { name: "Returns", icon: RotateCcw, href: "/app/returns" },
+      { name: "Expiry",  nameAr: "انتهاء الصلاحية", icon: Clock,    href: "/app/expiry" },
+      { name: "Returns", nameAr: "المرتجعات",        icon: RotateCcw, href: "/app/returns" },
     ],
   },
   {
-    label: "Quality",
+    label:   "Quality",
+    labelAr: "الجودة",
     items: [
-      { name: "Issues", icon: AlertTriangle, href: "/app/issues" },
-      { name: "Approvals", icon: CheckCircle, href: "/app/approvals" },
+      { name: "Issues",    nameAr: "المشكلات", icon: AlertTriangle, href: "/app/issues" },
+      { name: "Approvals", nameAr: "الموافقات", icon: CheckCircle,  href: "/app/approvals" },
     ],
   },
   {
-    label: "Analytics",
+    label:   "Analytics",
+    labelAr: "التحليلات",
     items: [
-      { name: "Reports", icon: BarChart3, href: "/app/reports" },
-      { name: "Campaigns", icon: Megaphone, href: "/app/campaigns" },
+      { name: "Reports",   nameAr: "التقارير", icon: BarChart3, href: "/app/reports" },
+      { name: "Campaigns", nameAr: "الحملات",  icon: Megaphone, href: "/app/campaigns" },
     ],
   },
   {
-    label: "Administration",
+    label:   "Administration",
+    labelAr: "الإدارة",
     items: [
-      { name: "Users", icon: UserCog, href: "/app/users" },
-      { name: "Settings", icon: Settings, href: "/app/settings" },
-      { name: "Audit Log", icon: FileText, href: "/app/audit-log" },
+      { name: "Users",      nameAr: "المستخدمون",    icon: UserCog, href: "/app/users" },
+      { name: "Settings",   nameAr: "الإعدادات",     icon: Settings, href: "/app/settings" },
+      { name: "Audit Log",  nameAr: "سجل المراجعة",  icon: FileText, href: "/app/audit-log" },
     ],
   },
 ];
 
-export default function WorkspaceLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function WorkspaceLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState<"EN" | "AR">("EN");
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
 
+  const isRTL = lang === "AR";
   const sidebarWidth = sidebarCollapsed ? "w-[72px]" : "w-[260px]";
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  async function handleLogout() {
+    setProfileOpen(false);
+    await logout();
+  }
+
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div
+      dir={isRTL ? "rtl" : "ltr"}
+      className="flex h-screen overflow-hidden bg-gray-50"
+    >
       {/* Mobile overlay */}
       {mobileMenuOpen && (
         <div
@@ -107,18 +115,21 @@ export default function WorkspaceLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-gray-200 transition-all duration-300
+        className={`fixed inset-y-0 z-50 flex flex-col bg-white border-gray-200 transition-all duration-300
+          ${isRTL ? "right-0 border-l" : "left-0 border-r"}
           ${sidebarWidth}
-          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+          ${mobileMenuOpen ? "translate-x-0" : isRTL ? "translate-x-full" : "-translate-x-full"}
           lg:translate-x-0 lg:static`}
       >
         {/* Sidebar Header */}
         <header className="flex h-16 items-center gap-3 px-4 border-b border-gray-100">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-yellow-500">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-yellow-500 flex-shrink-0">
             <Leaf className="w-5 h-5 text-white" />
           </div>
           {!sidebarCollapsed && (
-            <span className="text-lg font-semibold text-gray-900">Elfares</span>
+            <span className="text-lg font-semibold text-gray-900">
+              {isRTL ? "الفارس" : "Elfares"}
+            </span>
           )}
         </header>
 
@@ -128,7 +139,7 @@ export default function WorkspaceLayout({
             <div key={group.label} className="mb-4">
               {!sidebarCollapsed && (
                 <p className="px-3 mb-1 text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  {group.label}
+                  {isRTL ? group.labelAr : group.label}
                 </p>
               )}
               <ul className="space-y-1">
@@ -140,17 +151,18 @@ export default function WorkspaceLayout({
                       <Link
                         href={item.href}
                         className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors
-                          ${
-                            isActive
-                              ? "bg-green-50 text-green-700 border-l-2 border-green-600"
-                              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          ${isActive
+                            ? isRTL
+                              ? "bg-green-50 text-green-700 border-r-2 border-green-600"
+                              : "bg-green-50 text-green-700 border-l-2 border-green-600"
+                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                           }
                           ${sidebarCollapsed ? "justify-center" : ""}
                         `}
-                        title={sidebarCollapsed ? item.name : undefined}
+                        title={sidebarCollapsed ? (isRTL ? item.nameAr : item.name) : undefined}
                       >
                         <Icon className="w-5 h-5 flex-shrink-0" />
-                        {!sidebarCollapsed && <span>{item.name}</span>}
+                        {!sidebarCollapsed && <span>{isRTL ? item.nameAr : item.name}</span>}
                       </Link>
                     </li>
                   );
@@ -166,11 +178,10 @@ export default function WorkspaceLayout({
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             className="p-2 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           >
-            {sidebarCollapsed ? (
-              <ChevronRight className="w-5 h-5" />
-            ) : (
-              <ChevronLeft className="w-5 h-5" />
-            )}
+            {sidebarCollapsed
+              ? isRTL ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />
+              : isRTL ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />
+            }
           </button>
         </div>
       </aside>
@@ -179,7 +190,7 @@ export default function WorkspaceLayout({
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top bar */}
         <header className="flex h-16 items-center justify-between gap-4 border-b border-gray-200 bg-white px-4 lg:px-6">
-          {/* Left: hamburger (mobile) + search */}
+          {/* Left (start): hamburger + search */}
           <div className="flex items-center gap-3 flex-1">
             <button
               className="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100"
@@ -188,31 +199,71 @@ export default function WorkspaceLayout({
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div className="relative max-w-md flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className={`absolute ${isRTL ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400`} />
               <input
                 type="text"
-                placeholder="Search..."
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder={isRTL ? "بحث..." : "Search..."}
+                className={`w-full ${isRTL ? "pr-9 pl-4" : "pl-9 pr-4"} py-2 text-sm rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
               />
             </div>
           </div>
 
-          {/* Right: actions */}
+          {/* Right (end): bell + lang + avatar */}
           <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-md text-gray-500 hover:bg-gray-100">
+            <Link href="/app/notifications" className="relative p-2 rounded-md text-gray-500 hover:bg-gray-100">
               <Bell className="w-5 h-5" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-            </button>
+            </Link>
+
             <button
               onClick={() => setLang(lang === "EN" ? "AR" : "EN")}
               className="flex items-center gap-1 px-2 py-1.5 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-100"
             >
               <Globe className="w-4 h-4" />
-              {lang}
+              {lang === "EN" ? "AR" : "EN"}
             </button>
-            <button className="flex items-center justify-center w-8 h-8 rounded-full bg-green-600 text-white text-sm font-medium">
-              U
-            </button>
+
+            {/* Profile dropdown */}
+            <div ref={profileRef} className="relative">
+              <button
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors"
+              >
+                Y
+              </button>
+
+              {profileOpen && (
+                <div className={`absolute top-10 ${isRTL ? "left-0" : "right-0"} w-52 rounded-xl border border-gray-200 bg-white shadow-lg z-50 overflow-hidden`}>
+                  {/* User info */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm font-semibold text-gray-900">
+                      {isRTL ? "يوسف خان" : "Yousef Khan"}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">manager@elfares.com</p>
+                  </div>
+
+                  {/* Menu items */}
+                  <div className="py-1">
+                    <Link
+                      href="/app/settings"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+                    >
+                      <Settings className="w-4 h-4 text-gray-400" />
+                      {isRTL ? "الإعدادات" : "Settings"}
+                    </Link>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {isRTL ? "تسجيل الخروج" : "Sign out"}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
